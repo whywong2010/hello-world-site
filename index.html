@@ -88,58 +88,93 @@
     .lamp {
       position: relative;
       margin: 0 auto;
-      width: 140px;
-      height: 130px;
+      width: 170px;
+      height: 150px;
     }
 
     .lamp-head {
       margin: 0 auto;
-      width: 58px;
-      height: 28px;
+      width: 66px;
+      height: 34px;
       border-radius: 10px 10px 16px 16px;
-      background: #334155;
+      background: linear-gradient(180deg, #475569, #334155);
+      box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.2);
     }
 
     .lamp-neck {
       margin: 0 auto;
-      width: 6px;
-      height: 58px;
-      background: #64748b;
+      width: 8px;
+      height: 64px;
+      background: linear-gradient(180deg, #94a3b8, #64748b);
       border-radius: 999px;
     }
 
     .lamp-base {
       margin: 10px auto 0;
-      width: 92px;
-      height: 14px;
+      width: 118px;
+      height: 26px;
       border-radius: 999px;
-      background: #1f2937;
+      background: linear-gradient(180deg, #111827, #0f172a);
+      position: relative;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
-    .lamp-row {
+    .lamp-switch {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 58px;
+      height: 30px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      padding: 2px;
+      cursor: pointer;
+      outline-offset: 4px;
+    }
+
+    .switch-track {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f59e0b, #d97706);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), inset 0 -1px 3px rgba(0, 0, 0, 0.2);
+      transition: background 220ms ease;
+      position: relative;
+    }
+
+    .switch-knob {
+      position: absolute;
+      top: 3px;
+      left: 31px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #e5e7eb 70%);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.35);
+      transition: left 220ms ease;
+    }
+
+    .lamp-status {
       margin-top: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .lamp-btn {
-      border: 0;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: #1f2937;
-      color: #fff;
-    }
-
-    .lamp-label {
+    .lamp-label,
+    .lamp-hint {
       color: #78350f;
       font-weight: 600;
       font-size: 0.9rem;
+    }
+
+    .lamp-hint {
+      font-size: 0.82rem;
+      opacity: 0.85;
     }
 
     .lamp-zone.off .lamp-glow {
@@ -153,6 +188,18 @@
 
     .lamp-zone.off .lamp-label {
       color: #475569;
+    }
+
+    .lamp-zone.off .lamp-hint {
+      color: #64748b;
+    }
+
+    .lamp-zone.off .switch-track {
+      background: linear-gradient(180deg, #94a3b8, #64748b);
+    }
+
+    .lamp-zone.off .switch-knob {
+      left: 3px;
     }
 
     .carousel {
@@ -322,14 +369,18 @@
 
     <section class="lamp-zone" id="lampZone" aria-label="桌面台燈開關">
       <div class="lamp-glow" aria-hidden="true"></div>
-      <div class="lamp" aria-hidden="true">
+      <div class="lamp">
         <div class="lamp-head"></div>
         <div class="lamp-neck"></div>
-        <div class="lamp-base"></div>
+        <div class="lamp-base">
+          <button class="lamp-switch" id="lampSwitch" type="button" aria-label="台燈開關" aria-pressed="true">
+            <span class="switch-track"><span class="switch-knob"></span></span>
+          </button>
+        </div>
       </div>
-      <div class="lamp-row">
-        <button class="lamp-btn" id="lampSwitch" type="button">關燈</button>
+      <div class="lamp-status">
         <span class="lamp-label" id="lampLabel">台燈目前：開啟</span>
+        <span class="lamp-hint">（按台燈底座開關）</span>
       </div>
     </section>
 
@@ -460,7 +511,7 @@
 
     function toggleLamp() {
       const isOff = lampZone.classList.toggle("off");
-      lampSwitch.textContent = isOff ? "開燈" : "關燈";
+      lampSwitch.setAttribute("aria-pressed", String(!isOff));
       lampLabel.textContent = `台燈目前：${isOff ? "關閉" : "開啟"}`;
     }
 
