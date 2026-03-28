@@ -61,6 +61,100 @@
       text-align: center;
     }
 
+    .lamp-zone {
+      margin: 0 auto 18px;
+      width: min(380px, 100%);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fefce8, #fffbeb);
+      border: 1px solid #fcd34d;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lamp-glow {
+      position: absolute;
+      left: 50%;
+      top: 70px;
+      width: 190px;
+      height: 120px;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at 50% 0%, rgba(253, 224, 71, 0.9), rgba(253, 224, 71, 0));
+      transition: opacity 240ms ease;
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    .lamp {
+      position: relative;
+      margin: 0 auto;
+      width: 140px;
+      height: 130px;
+    }
+
+    .lamp-head {
+      margin: 0 auto;
+      width: 58px;
+      height: 28px;
+      border-radius: 10px 10px 16px 16px;
+      background: #334155;
+    }
+
+    .lamp-neck {
+      margin: 0 auto;
+      width: 6px;
+      height: 58px;
+      background: #64748b;
+      border-radius: 999px;
+    }
+
+    .lamp-base {
+      margin: 10px auto 0;
+      width: 92px;
+      height: 14px;
+      border-radius: 999px;
+      background: #1f2937;
+    }
+
+    .lamp-row {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lamp-btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: #1f2937;
+      color: #fff;
+    }
+
+    .lamp-label {
+      color: #78350f;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .lamp-zone.off .lamp-glow {
+      opacity: 0;
+    }
+
+    .lamp-zone.off {
+      background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+      border-color: #cbd5e1;
+    }
+
+    .lamp-zone.off .lamp-label {
+      color: #475569;
+    }
+
     .carousel {
       position: relative;
       overflow: hidden;
@@ -226,6 +320,19 @@
     <h1>Hello world</h1>
     <p>我的作品展示：使用網路圖片做輪播範例</p>
 
+    <section class="lamp-zone" id="lampZone" aria-label="桌面台燈開關">
+      <div class="lamp-glow" aria-hidden="true"></div>
+      <div class="lamp" aria-hidden="true">
+        <div class="lamp-head"></div>
+        <div class="lamp-neck"></div>
+        <div class="lamp-base"></div>
+      </div>
+      <div class="lamp-row">
+        <button class="lamp-btn" id="lampSwitch" type="button">關燈</button>
+        <span class="lamp-label" id="lampLabel">台燈目前：開啟</span>
+      </div>
+    </section>
+
     <section class="carousel" aria-label="作品圖片輪播">
       <div class="slides" id="slides">
         <article class="slide">
@@ -269,6 +376,9 @@
     const togglePlayBtn = document.getElementById("togglePlay");
     const copyLinkBtn = document.getElementById("copyLink");
     const statusText = document.getElementById("statusText");
+    const lampZone = document.getElementById("lampZone");
+    const lampSwitch = document.getElementById("lampSwitch");
+    const lampLabel = document.getElementById("lampLabel");
 
     let currentIndex = 0;
     let timer;
@@ -348,11 +458,18 @@
       window.open(img.src, "_blank", "noopener,noreferrer");
     }
 
+    function toggleLamp() {
+      const isOff = lampZone.classList.toggle("off");
+      lampSwitch.textContent = isOff ? "開燈" : "關燈";
+      lampLabel.textContent = `台燈目前：${isOff ? "關閉" : "開啟"}`;
+    }
+
     prevBtn.addEventListener("click", () => move(-1));
     nextBtn.addEventListener("click", () => move(1));
     togglePlayBtn.addEventListener("click", toggleAutoPlay);
     copyLinkBtn.addEventListener("click", copyCurrentLink);
     openImageBtn.addEventListener("click", openCurrentImage);
+    lampSwitch.addEventListener("click", toggleLamp);
 
     updateCarousel();
     startAutoPlay();
