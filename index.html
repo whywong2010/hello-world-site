@@ -111,50 +111,44 @@
 
     .lamp-base {
       margin: 10px auto 0;
-      width: 118px;
-      height: 26px;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #111827, #0f172a);
+      width: 126px;
+      height: 32px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f3e6d0, #e7d3b2);
       position: relative;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(120, 90, 56, 0.22);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.65), 0 3px 10px rgba(31, 42, 55, 0.18);
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 180ms ease;
     }
 
-    .lamp-switch {
+    .lamp-base::before {
+      position: absolute;
+      right: 22px;
+      top: -6px;
+      width: 14px;
+      height: 22px;
+      border: 0;
+      border-radius: 2px;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 4px rgba(2, 6, 23, 0.45);
+      transform-origin: center 95%;
+      transform: rotate(-16deg);
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+      content: "";
+    }
+
+    .lamp-base::after {
+      content: "";
       position: absolute;
       left: 50%;
       top: 50%;
+      width: 42px;
+      height: 10px;
       transform: translate(-50%, -50%);
-      width: 58px;
-      height: 30px;
-      border: 0;
       border-radius: 999px;
-      background: transparent;
-      padding: 2px;
-      cursor: pointer;
-      outline-offset: 4px;
-    }
-
-    .switch-track {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(180deg, #f59e0b, #d97706);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), inset 0 -1px 3px rgba(0, 0, 0, 0.2);
-      transition: background 220ms ease;
-      position: relative;
-    }
-
-    .switch-knob {
-      position: absolute;
-      top: 3px;
-      left: 31px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #e5e7eb 70%);
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.35);
-      transition: left 220ms ease;
+      background: rgba(15, 23, 42, 0.18);
+      pointer-events: none;
     }
 
     .lamp-status {
@@ -194,12 +188,18 @@
       color: #64748b;
     }
 
-    .lamp-zone.off .switch-track {
-      background: linear-gradient(180deg, #94a3b8, #64748b);
+    .lamp-zone.off .lamp-base {
+      background: linear-gradient(180deg, #edf2f7, #d8e2ee);
     }
 
-    .lamp-zone.off .switch-knob {
-      left: 3px;
+    .lamp-zone.off .lamp-base::before {
+      transform: translateY(2px) rotate(12deg);
+      background: linear-gradient(180deg, #1e293b, #0f172a);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(2, 6, 23, 0.45);
+    }
+
+    .lamp-base:active {
+      transform: translateY(1px);
     }
 
     .carousel {
@@ -372,15 +372,11 @@
       <div class="lamp">
         <div class="lamp-head"></div>
         <div class="lamp-neck"></div>
-        <div class="lamp-base">
-          <button class="lamp-switch" id="lampSwitch" type="button" aria-label="台燈開關" aria-pressed="true">
-            <span class="switch-track"><span class="switch-knob"></span></span>
-          </button>
-        </div>
+        <div class="lamp-base" id="lampBase" role="button" tabindex="0" aria-label="台燈開關" aria-pressed="true"></div>
       </div>
       <div class="lamp-status">
         <span class="lamp-label" id="lampLabel">台燈目前：開啟</span>
-        <span class="lamp-hint">（按台燈底座開關）</span>
+        <span class="lamp-hint">（點台燈底座可開關）</span>
       </div>
     </section>
 
@@ -428,7 +424,7 @@
     const copyLinkBtn = document.getElementById("copyLink");
     const statusText = document.getElementById("statusText");
     const lampZone = document.getElementById("lampZone");
-    const lampSwitch = document.getElementById("lampSwitch");
+    const lampBase = document.getElementById("lampBase");
     const lampLabel = document.getElementById("lampLabel");
 
     let currentIndex = 0;
@@ -511,7 +507,7 @@
 
     function toggleLamp() {
       const isOff = lampZone.classList.toggle("off");
-      lampSwitch.setAttribute("aria-pressed", String(!isOff));
+      lampBase.setAttribute("aria-pressed", String(!isOff));
       lampLabel.textContent = `台燈目前：${isOff ? "關閉" : "開啟"}`;
     }
 
@@ -520,7 +516,13 @@
     togglePlayBtn.addEventListener("click", toggleAutoPlay);
     copyLinkBtn.addEventListener("click", copyCurrentLink);
     openImageBtn.addEventListener("click", openCurrentImage);
-    lampSwitch.addEventListener("click", toggleLamp);
+    lampBase.addEventListener("click", toggleLamp);
+    lampBase.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleLamp();
+      }
+    });
 
     updateCarousel();
     startAutoPlay();
