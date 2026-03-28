@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello World | Portfolio Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Noto+Sans+TC:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-1: #f9efe5;
+      --bg-2: #d9edf5;
+      --text-main: #1f2a37;
+      --text-sub: #4b5563;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --accent: #d97706;
+      --accent-soft: #fde68a;
+      --shadow: 0 18px 40px rgba(31, 42, 55, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      background: radial-gradient(circle at 10% 15%, #ffffff 0%, transparent 44%),
+        radial-gradient(circle at 90% 85%, #fff7ed 0%, transparent 34%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: min(960px, 100%);
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      backdrop-filter: blur(8px);
+      animation: rise-in 700ms ease-out both;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+
+    p {
+      margin: 8px 0 22px;
+      color: var(--text-sub);
+      text-align: center;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      aspect-ratio: 16 / 9;
+      background: #d1d5db;
+    }
+
+    .slides {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 480ms ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      background: rgba(17, 24, 39, 0.58);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+      pointer-events: none;
+    }
+
+    .control-btn {
+      pointer-events: auto;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      color: #111827;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .control-btn:hover {
+      transform: scale(1.05);
+      background: #fff;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 14px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 0;
+      background: #9ca3af;
+      cursor: pointer;
+      transition: width 200ms ease, background 200ms ease;
+    }
+
+    .dot.active {
+      width: 24px;
+      background: var(--accent);
+    }
+
+    @keyframes rise-in {
+      from {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      .caption {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Hello world</h1>
+    <p>我的作品展示：使用網路圖片做輪播範例</p>
+
+    <section class="carousel" aria-label="作品圖片輪播">
+      <div class="slides" id="slides">
+        <article class="slide">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80" alt="桌面開發工作站" />
+          <div class="caption">作品 01：產品網站設計</div>
+        </article>
+        <article class="slide">
+          <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1400&q=80" alt="平板上的設計稿" />
+          <div class="caption">作品 02：行動版 UI 優化</div>
+        </article>
+        <article class="slide">
+          <img src="https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?auto=format&fit=crop&w=1400&q=80" alt="筆電與程式碼畫面" />
+          <div class="caption">作品 03：前端互動開發</div>
+        </article>
+      </div>
+
+      <div class="controls">
+        <button class="control-btn" id="prev" type="button" aria-label="上一張">&#10094;</button>
+        <button class="control-btn" id="next" type="button" aria-label="下一張">&#10095;</button>
+      </div>
+    </section>
+
+    <div class="dots" id="dots" aria-label="輪播分頁"></div>
+  </main>
+
+  <script>
+    const slides = document.getElementById("slides");
+    const slideItems = Array.from(document.querySelectorAll(".slide"));
+    const dotsWrap = document.getElementById("dots");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+
+    let currentIndex = 0;
+    let timer;
+
+    slideItems.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.className = "dot";
+      dot.type = "button";
+      dot.setAttribute("aria-label", `切換到第 ${index + 1} 張`);
+      dot.addEventListener("click", () => {
+        currentIndex = index;
+        updateCarousel();
+        restartAutoPlay();
+      });
+      dotsWrap.appendChild(dot);
+    });
+
+    const dots = Array.from(document.querySelectorAll(".dot"));
+
+    function updateCarousel() {
+      slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentIndex);
+      });
+    }
+
+    function move(step) {
+      currentIndex = (currentIndex + step + slideItems.length) % slideItems.length;
+      updateCarousel();
+      restartAutoPlay();
+    }
+
+    function startAutoPlay() {
+      timer = window.setInterval(() => {
+        currentIndex = (currentIndex + 1) % slideItems.length;
+        updateCarousel();
+      }, 3500);
+    }
+
+    function restartAutoPlay() {
+      window.clearInterval(timer);
+      startAutoPlay();
+    }
+
+    prevBtn.addEventListener("click", () => move(-1));
+    nextBtn.addEventListener("click", () => move(1));
+
+    updateCarousel();
+    startAutoPlay();
+  </script>
+</body>
+</html>
